@@ -1,0 +1,6 @@
+!!org.example.mysql.MySQLConfig
+host: localhost
+user: 3306
+pass: root
+port: mk871396
+db: smscdatabase
