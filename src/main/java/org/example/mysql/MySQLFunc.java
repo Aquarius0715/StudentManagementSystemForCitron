@@ -21,7 +21,7 @@ public class MySQLFunc {
 
     public Connection open() {
         try {
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("com.mysql.cj.jdbc.Driver");
             conn = DriverManager.getConnection("jdbc:mysql://" + HOST + ":" + PORT + "/" + DB + "?useSSL=false", USER, PASS);
             return conn;
         } catch (SQLException e) {
