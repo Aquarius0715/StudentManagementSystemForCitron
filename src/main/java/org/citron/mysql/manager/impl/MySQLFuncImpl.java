@@ -1,17 +1,19 @@
-package org.example.mysql;
+package org.citron.mysql.manager.impl;
+
+import org.citron.mysql.manager.MySQLFunc;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class MySQLFunc {
+public class MySQLFuncImpl implements MySQLFunc {
     private final String HOST;
     private final String DB;
     private final String USER;
     private final String PASS;
     private final String PORT;
     private Connection conn;
-    public MySQLFunc(String host, String db, String user, String pass, String port) {
+    public MySQLFuncImpl(String host, String db, String user, String pass, String port) {
         this.HOST = host;
         this.DB = db;
         this.USER = user;
@@ -19,6 +21,7 @@ public class MySQLFunc {
         this.PORT = port;
     }
 
+    @Override
     public Connection open() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -32,10 +35,12 @@ public class MySQLFunc {
         return conn;
     }
 
+    @Override
     public boolean checkConnection() {
         return conn != null;
     }
 
+    @Override
     public void close(Connection c) {
         try {
             c.close();

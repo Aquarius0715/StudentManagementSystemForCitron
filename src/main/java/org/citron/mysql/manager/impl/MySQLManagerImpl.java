@@ -1,30 +1,29 @@
-package org.example.mysql;
+package org.citron.mysql.manager.impl;
+
+import org.citron.mysql.manager.MySQLManager;
+import org.citron.mysql.manager.model.MySQLConfigMdl;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class MySQLManager {
+public class MySQLManagerImpl implements MySQLManager {
     private boolean isDebugMode;
-    private String HOST;
-    private String DB;
-    private String USER;
-    private String PASS;
-    private String PORT;
+    private MySQLConfigMdl mdl;
     private String connectionName;
     private boolean isConnected;
     private Statement statement;
     private Connection connection;
-    MySQLFunc mySQLFunc;
+    MySQLFuncImpl mySQLFunc;
 
-    public MySQLManager(String connectionName) {
+    public MySQLManagerImpl(String connectionName) {
         loadConfig();
-        HOST = "localhost";
-        USER = "root";
-        PASS = "mk871396";
-        PORT = "3306";
-        DB = "smscdatabase";
+        mdl.setHOST("localhost");
+        mdl.setUSER("root");
+        mdl.setPASS("mk871396");
+        mdl.setDB("smscdatabase");
+        mdl.setPORT("3306");
         this.connectionName = connectionName;
         createTables();
     }
@@ -42,11 +41,12 @@ public class MySQLManager {
     }
 
     private boolean Connect(String host, String db, String user, String pass, String port) {
-        HOST = host;
-        DB = db;
-        USER = user;
-        PASS = pass;
-        mySQLFunc = new MySQLFunc(HOST, DB, USER, PASS, PORT);
+        mdl.setHOST(host);
+        mdl.setUSER(user);
+        mdl.setPASS(pass);
+        mdl.setDB(db);
+        mdl.setPORT(port);
+        mySQLFunc = new MySQLFuncImpl(mdl.getHOST(), mdl.getDB(), mdl.getUSER(), mdl.getPASS(), mdl.getPORT());
         connection = mySQLFunc.open();
         if (connection == null) {
             System.out.println("failed to open MYSQL");
@@ -64,12 +64,14 @@ public class MySQLManager {
         return isConnected;
     }
 
+    @Override
     public boolean checkConnect() {
-        return Connect(HOST, DB, USER, PASS, PORT);
+        return Connect(mdl.getHOST(), mdl.getDB(), mdl.getUSER(), mdl.getPASS(), mdl.getPORT());
     }
 
+    @Override
     public boolean execute(String query) {
-        mySQLFunc = new MySQLFunc(HOST, DB, USER, PASS, PORT);
+        mySQLFunc = new MySQLFuncImpl(mdl.getHOST(), mdl.getDB(), mdl.getUSER(), mdl.getPASS(), mdl.getPORT());
         connection = mySQLFunc.open();
         if (connection == null) {
             System.out.println("failed to open MYSQL");
@@ -91,8 +93,9 @@ public class MySQLManager {
         return isSuccess;
     }
 
+    @Override
     public ResultSet query(String query) {
-        mySQLFunc = new MySQLFunc(HOST, DB, USER, PASS, PORT);
+        mySQLFunc = new MySQLFuncImpl(mdl.getHOST(), mdl.getDB(), mdl.getUSER(), mdl.getPASS(), mdl.getPORT());
         connection = mySQLFunc.open();
         ResultSet resultSet = null;
         if (connection == null) {
@@ -112,6 +115,7 @@ public class MySQLManager {
         return resultSet;
     }
 
+    @Override
     public void close() {
         try {
             statement.close();
@@ -121,17 +125,17 @@ public class MySQLManager {
         }
     }
 
-    public void createTables() {
+    private void createTables() {
         execute(
-                "CREATE TABLE IF NOT EXISTS smsc_users(" +
+                "CREATE TABLE IF NOT EXISTS smscUsers(" +
                         "id INT AUTO_INCREMENT NOT NULL PRIMARY KEY," +
                         "uuid VARCHAR(36) NOT NULL DEFAULT 'none'," +
-                        "student_number VARCHAR(5) NOT NULL DEFAULT 0," +
-                        "first_name VARCHAR(32) NOT NULL DEFAULT 'none'," +
-                        "last_name VARCHAR(32) NOT NULL DEFAULT 'none'," +
+                        "studentNumber INT NOT NULL DEFAULT 0," +
+                        "firstName VARCHAR(32) NOT NULL DEFAULT 'none'," +
+                        "lastName VARCHAR(32) NOT NULL DEFAULT 'none'," +
                         "sex enum('male', 'female', 'no_answer')," +
-                        "birth_date date NOT NULL DEFAULT '2000:01:01'," +
-                        "query_date date NOT NULL DEFAULT '2000:01:01'," +
-                        "update_date date NOT NULL DEFAULT '2000:01:01')");
+                        "birthDate date NOT NULL DEFAULT '2000:01:01'," +
+                        "queryDate date NOT NULL DEFAULT '2000:01:01'," +
+                        "updateDate date NOT NULL DEFAULT '2000:01:01')");
     }
 }

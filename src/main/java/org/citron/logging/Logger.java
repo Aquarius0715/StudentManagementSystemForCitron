@@ -1,4 +1,4 @@
-package org.example.logging;
+package org.citron.logging;
 
 public class Logger {
     public void info(String msg) {

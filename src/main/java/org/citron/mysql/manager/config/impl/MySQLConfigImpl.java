@@ -1,8 +1,9 @@
-package org.example.mysql;
+package org.citron.mysql.manager.config.impl;
 
+import org.citron.mysql.manager.config.MySQLConfig;
 import org.yaml.snakeyaml.Yaml;
 
-public class MySQLConfig {
+public class MySQLConfigImpl implements MySQLConfig {
     private String host;
     private String user;
     private String pass;
@@ -25,7 +26,8 @@ public class MySQLConfig {
         return db;
     }
 
-    public static MySQLConfig loadConfig() {
-        return new Yaml().load(MySQLConfig.class.getResourceAsStream("src/main/java/org/example/mysql/config/config.yml"));
+    @Override
+    public MySQLConfigImpl loadConfig() {
+        return new Yaml().load(MySQLConfigImpl.class.getResourceAsStream("src/main/java/org/example/mysql/config/config.yml"));
     }
 }
