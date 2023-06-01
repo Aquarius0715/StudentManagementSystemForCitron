@@ -1,29 +1,29 @@
 package org.citron.mysql.dto;
 
-import org.citron.struct.Sex;
+import org.citron.struct.Gender;
 
 import java.util.Date;
 
-public class smscUsersDTO {
+public class SMSCUsersDTO {
     private String UUID;
     private int studentNumber;
     private String firstName;
     private String lastName;
-    private Sex sex;
+    private Gender gender;
     private Date birthDate;
     private Date queryDate;
     private Date updateDate;
 
-    public smscUsersDTO() {
+    public SMSCUsersDTO() {
 
     }
 
-    public smscUsersDTO(String UUID, int studentNumber, String firstName, String lastName, Sex sex, Date birthDate, Date queryDate, Date updateDate) {
+    public SMSCUsersDTO(String UUID, int studentNumber, String firstName, String lastName, Gender gender, Date birthDate, Date queryDate, Date updateDate) {
         this.UUID = UUID;
         this.studentNumber = studentNumber;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.sex = sex;
+        this.gender = gender;
         this.birthDate = birthDate;
         this.queryDate = queryDate;
         this.updateDate = updateDate;
@@ -57,8 +57,20 @@ public class smscUsersDTO {
         return studentNumber;
     }
 
-    public Sex getSex() {
-        return sex;
+    public Gender getGender() {
+        return gender;
+    }
+
+    public String getGenderAsString() {
+        if (gender == Gender.male) {
+            return "male";
+        }
+        else if (gender == Gender.female) {
+            return "female";
+        }
+        else {
+            return "noAnswer";
+        }
     }
 
     public void setBirthDate(Date birthDate) {
@@ -77,8 +89,8 @@ public class smscUsersDTO {
         this.queryDate = queryDate;
     }
 
-    public void setSex(Sex sex) {
-        this.sex = sex;
+    public void setGender(Gender gender) {
+        this.gender = gender;
     }
 
     public void setStudentNumber(int studentNumber) {

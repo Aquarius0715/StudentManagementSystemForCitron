@@ -19,6 +19,7 @@ public class MySQLManagerImpl implements MySQLManager {
 
     public MySQLManagerImpl(String connectionName) {
         loadConfig();
+        mdl = new MySQLConfigMdl();
         mdl.setHOST("localhost");
         mdl.setUSER("root");
         mdl.setPASS("mk871396");
